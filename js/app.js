@@ -3,10 +3,19 @@ const canvas = document.querySelector('#playspace')
 canvas.width = innerWidth
 canvas.height = innerHeight
 const ctx = canvas.getContext('2d')
+
+//parameters for reality
 const gravity = 0.6
 const friction = 0.7
-//frame counter
-//let frame = 0
+
+
+//key status
+let keys = {
+  right: false,
+  left: false,
+  up: false,
+}
+
 
 //player class
 class Player {
@@ -29,23 +38,6 @@ class Player {
   draw(){
     ctx.drawImage(this.link, this.x, this.y)
   }
-  moveLeft(){
-    this.x -= 5
-  }
-  moveRight(){
-    this.x += 5
-  }
-  moveUp(){
-    this.y -= 5
-  }
-  fallDown(){
-    if (player.jump == false) {
-      player.xSpeed *= friction
-    } else{
-      player.ySpeed += gravity
-      }
-    player.jump = true
-    }
 }
 
 //player attack class
@@ -74,17 +66,41 @@ class Enemy {
 
 //function to animate things
 function animate() {
-  requestAnimationFrame(animate)
-  // frame++
   ctx.clearRect(0, 0, canvas.width, canvas.height)
+  if (keys.left){
+    player.x -= 3
+  }
+  if (keys.right){
+    player.x += 3
+  }
   player.draw()
-  player.fallDown()
 }
 
+//function to react to key press down
+const keyDown = (e) => {
+  e.preventDefault()
+  if (e.keyCode == 37 || e.keyCode == 65){
+    keys.left = true
+  }
+  if (e.keyCode == 39 || e.keyCode == 68){
+    keys.right = true
+  }
+}
+
+//function to react to releasing key
+const keyUp = (e) => {
+  e.preventDefault()
+  if (e.keyCode == 37 || e.keyCode == 65){
+    keys.left = false
+  }
+  if (e.keyCode == 39 || e.keyCode == 68){
+    keys.right = false
+  }
+}
+
+
 //game initialization
-window.addEventListener('keydown', function(e){
-  keyPress(e)
-})
+
 const player = new Player(innerWidth/2, innerHeight/2, document.querySelector('#player'))
 setInterval(animate, 22)
 
@@ -103,59 +119,5 @@ window.addEventListener('keydown', function(e){
   }
 })
 
-//event listeners for player movement
-
-function keyPress(e) {
-  e.preventDefault()
-  if (e.keyCode == 65 || e.keyCode == 37){
-    player.moveLeft()}
-  if (e.keyCode == 68 || e.keyCode == 39){
-    player.moveRight()
-  }
-}
-
-
-// window.addEventListener('keydown', function(e){
-//   if (e.keyCode == 65 || e.keyCode == 37){
-//     e.preventDefault()
-//     //move left
-//     console.log('left')
-//     player.moveLeft()
-//     player.draw()
-//   }
-// })
-//
-// window.addEventListener('keydown', function(e){
-//   if (e.keyCode == 68 || e.keyCode == 39){
-//     e.preventDefault()
-//     //move right
-//     console.log('right')
-//     player.moveRight()
-//     player.draw()
-//   }
-// })
-
-window.addEventListener('keydown', function(e){
-  if (e.keyCode == 87 || e.keyCode == 38){
-    e.preventDefault
-    //jump
-    console.log('jump')
-    if (player.jump == false){
-      player.ySpeed = -10
-    }
-    // player.gravitySpeed = 0
-    // player.speedY = 0
-    // player.gravity = -0.0005
-    // setTimeout(function(){
-    //   player.gravity = 0.00005
-    // }, 88)
-    }
-  })
-
-window.addEventListener('keyup', function(e){
-    if (e.keyCode == 87 || e.keyCode == 38){
-      if (player.ySpeed < -2){
-        player.ySpeed = -3
-      }
-    }
-  })
+window.addEventListener('keydown', keyDown)
+window.addEventListener('keyup', keyUp)
