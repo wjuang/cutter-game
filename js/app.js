@@ -4,6 +4,7 @@ canvas.width = innerWidth
 canvas.height = innerHeight
 const ctx = canvas.getContext('2d')
 
+
 //parameters for reality
 const gravity = 0.6
 const friction = 0.7
@@ -14,6 +15,7 @@ let keys = {
   right: false,
   left: false,
   up: false,
+  space: false,
 }
 
 
@@ -104,18 +106,32 @@ const keyUp = (e) => {
 const player = new Player(innerWidth/2, innerHeight/2, document.querySelector('#player'))
 setInterval(animate, 22)
 
-
+//setup variables for attack script
+let attackTime
+let attackInterval
 //event listener for attack
 window.addEventListener('keydown', function(e){
-  if (e.keyCode == 32 && e.target == document.body){
+  if (e.keyCode == 32 && e.target == document.body && player.cooldown == false){
     //stop spacebar scroll
     e.preventDefault()
     console.log('space')
     const attack = new Attack(player.x + 50, player.y, document.querySelector('#attack'))
-    attack.draw()
-    // setTimeout(function(){
-    //   //delete attack here
-    // }, 1000)
+    keys.space = true
+    player.cooldown = true
+    setTimeout(function(){
+      keys.space = false
+      player.cooldown = false
+    }, 1000)
+    //trial function to make attack happen for x seconds
+    attackTime = 1
+    attackInterval = setInterval(function(){
+      if (attackTime <= 80){
+        attack.draw()
+        attackTime++
+      } else{
+        clearInterval(attackInterval)
+      }
+    }, 1)
   }
 })
 
