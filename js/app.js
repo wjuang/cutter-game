@@ -33,8 +33,9 @@ class Player {
     //attack cooldown
     this.cooldown = false
 
-    //jump cooldown
+    //jump status
     this.jump = false
+    this.jumpCooldown = false
   }
   //draw method for player
   draw(){
@@ -78,8 +79,10 @@ const createPlatform = (x, y, width) => {
   })
 }
 //finished platforms below:
-createPlatform(275, 200, 300)
-console.log(platforms)
+createPlatform(375, 200, 250)
+createPlatform(100, 350, 250)
+createPlatform(650, 350, 250)
+createPlatform(0, 480, 1000)
 //function to render array
 const buildPlatforms = () => {
   ctx.fillStyle = "#000000"
@@ -99,25 +102,21 @@ function animate() {
     player.xSpeed *= friction
   } else{
     player.ySpeed += gravity
+    player.xSpeed *= (friction)
   }
-  player.jump = false
-
   if (keys.up){
-    if (player.jump = false){
-      player.ySpeed = -10
+    if (player.jump == false && player.jumpCooldown == false){
+      player.ySpeed = -13
+      player.jumpCooldown = true
+      player.jump = true
     }
-  }
-
-  //hit the ground
-  if (player.y == 500){
-    player.jump = false
   }
   //left and right movement
   if (keys.left){
-    player.xSpeed -= 2
+    player.xSpeed -= 1.5
   }
   if (keys.right){
-    player.xSpeed += 2
+    player.xSpeed += 1.5
   }
   player.y += player.ySpeed
   player.x += player.xSpeed
@@ -125,6 +124,18 @@ function animate() {
   player.draw()
   //constantly make platforms
   buildPlatforms()
+  //platform collision
+  let i = -1
+  if (platforms[3].x < player.x && player.x < platforms[3].x + platforms[3].width && platforms[3].y < player.y+65 && platforms[3].y + platforms[3].height){
+    i = 3
+    console.log('hit')
+  }
+  if (i > -1){
+    player.jump = false
+    player.y = platforms[i].y-65
+    player.ySpeed = 0
+    player.jumpCooldown = false
+  }
 }
 
 //function to react to key press down
@@ -138,6 +149,9 @@ const keyDown = (e) => {
   }
   if (e.keyCode == 87 || e.keyCode == 38){
     keys.up = true
+    if (player.ySpeed < -2){
+      player.ySpeed = -3
+    }
   }
 }
 
@@ -158,7 +172,7 @@ const keyUp = (e) => {
 
 //game initialization
 
-const player = new Player(0, 0, document.querySelector('#player'))
+const player = new Player(10, 485, document.querySelector('#player'))
 setInterval(animate, 22)
 
 //setup variables for attack script
