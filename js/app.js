@@ -115,9 +115,11 @@ function animate() {
   //left and right movement
   if (keys.left){
     player.xSpeed -= 1.5
+    player.flip = true
   }
   if (keys.right){
     player.xSpeed += 1.5
+    player.flip = false
   }
   player.y += player.ySpeed
   player.x += player.xSpeed
@@ -192,7 +194,13 @@ window.addEventListener('keydown', function(e){
   if (e.keyCode == 32 && e.target == document.body && player.cooldown == false){
     //stop spacebar scroll
     e.preventDefault()
-    const attack = new Attack(player.x + 50, player.y, document.querySelector('#attack'))
+    const attack = new Attack(player.x, player.y, document.querySelector('#attack'))
+    if (player.flip == false){
+      attack.x += 50
+    }
+    if (player.flip == true){
+      attack.x -=50
+    }
     keys.space = true
     player.cooldown = true
     setTimeout(function(){
