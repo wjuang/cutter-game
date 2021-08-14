@@ -57,15 +57,37 @@ class Attack {
 
 //enemy class
 class Enemy {
-  constructor(x, y, link){
+  constructor(x, y, link, left){
     this.x = x
     this.y = y
+    this.xSpeed = 1
+    this.ySpeed = 0
     this.link = link
+    this.left = left
+    this.jump = false
+    //this last one is for platform collision
+    this.j = -1
   }
   draw(){
     ctx.drawImage(this.link, this.x, this.y)
   }
 }
+
+//function to spawn enemies
+const enemies = []
+let xOptions = [100, 375, 650]
+let leftOptions = [false, true]
+let leftChoice
+let xChoice
+const spawnEnemies = () => {
+  xChoice = xOptions[Math.round(Math.random() * 2)]
+  leftChoice = leftOptions[Math.round(Math.random())]
+  let spawner = setInterval(() => {
+    enemies.push(new Enemy(xChoice, 0, document.querySelector('#enemy'), leftChoice))
+    console.log(enemies)
+  }, 4000)
+}
+spawnEnemies()
 
 //make platforms
 const platforms = []
@@ -112,6 +134,24 @@ function animate() {
     }
   }
   player.jump = true
+
+  //acceleration rules for enemies
+  enemies.forEach((enemy) => {
+    if (enemy.jump == false){
+      enemy.xSpeed *= friction
+    } else {
+      enemy.ySpeed += gravity
+      enemy.xSpeed *= friction
+    }
+    enemy.jump = true
+    if (enemy.flip == false){
+      enemy.xSpeed = 1
+    } else {
+      enemy.xSpeed = -1
+    }
+    enemy.y += enemy.ySpeed
+    enemy.x += enemy.xSpeed
+  })
   //left and right movement
   if (keys.left){
     player.xSpeed -= 1.5
@@ -127,7 +167,11 @@ function animate() {
   player.draw()
   //constantly make platforms
   buildPlatforms()
-  //platform collision
+  //constantly make enemies
+  enemies.forEach((enemy) => {
+    enemy.draw()
+  })
+  //platform collision for player
   let i = -1
   if (platforms[3].x < player.x && player.x < platforms[3].x + platforms[3].width && platforms[3].y < player.y+64 && player.y < platforms[3].y + platforms[3].height){
     i = 3
@@ -147,6 +191,27 @@ function animate() {
     player.ySpeed = 0
     player.jumpCooldown = false
   }
+  //platform collision for enemies
+  enemies.forEach((enemy) => {
+    enemy.j = -1
+    if (platforms[3].x < enemy.x && enemy.x < platforms[3].x + platforms[3].width && platforms[3].y < enemy.y+64 && enemy.y < platforms[3].y + platforms[3].height){
+      enemy.j = 3
+    }
+    if (platforms[0].x-40 < enemy.x && enemy.x < platforms[0].x-40 + platforms[0].width+20 && platforms[0].y < enemy.y+64 && enemy.y < platforms[0].y + platforms[0].height){
+      enemy.j = 0
+    }
+    if (platforms[1].x-40 < enemy.x && enemy.x < platforms[1].x-40 + platforms[1].width+20 && platforms[1].y < enemy.y+64 && enemy.y < platforms[1].y + platforms[3].height){
+      enemy.j = 1
+    }
+    if (platforms[2].x-40 < enemy.x && enemy.x < platforms[2].x-40 + platforms[2].width+20 && platforms[2].y < enemy.y+64 && enemy.y < platforms[2].y + platforms[2].height){
+      enemy.j = 2
+    }
+    if (enemy.j > -1){
+      enemy.jump = false
+      enemy.y = platforms[enemy.j].y-64
+      enemy.ySpeed = 0
+    }
+  })
 }
 
 //function to react to key press down
