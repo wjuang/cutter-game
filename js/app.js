@@ -1,7 +1,7 @@
 //Necessary canvas functions
 const canvas = document.querySelector('#playspace')
-canvas.width = innerWidth
-canvas.height = innerHeight
+canvas.width = 1000
+canvas.height = 500
 const ctx = canvas.getContext('2d')
 
 
@@ -66,16 +66,65 @@ class Enemy {
   }
 }
 
+//make platforms
+const platforms = []
+//function to build platform into array
+const createPlatform = (x, y, width) => {
+  platforms.push({
+    x: x,
+    y: y,
+    width: width,
+    height: 20,
+  })
+}
+//finished platforms below:
+createPlatform(275, 200, 300)
+console.log(platforms)
+//function to render array
+const buildPlatforms = () => {
+  ctx.fillStyle = "#000000"
+  for (each in platforms){
+    ctx.fillRect(platforms[each].x, platforms[each].y, platforms[each].width, platforms[each].height)
+  }
+}
+
+
+
 //function to animate things
 function animate() {
+  //frame refresh command
   ctx.clearRect(0, 0, canvas.width, canvas.height)
+  //acceleration rules
+  if (player.jump == false){
+    player.xSpeed *= friction
+  } else{
+    player.ySpeed += gravity
+  }
+  player.jump = false
+
+  if (keys.up){
+    if (player.jump = false){
+      player.ySpeed = -10
+    }
+  }
+
+  //hit the ground
+  if (player.y == 500){
+    player.jump = false
+  }
+  //left and right movement
   if (keys.left){
-    player.x -= 3
+    player.xSpeed -= 2
   }
   if (keys.right){
-    player.x += 3
+    player.xSpeed += 2
   }
+  player.y += player.ySpeed
+  player.x += player.xSpeed
+  //constantly make updated character
   player.draw()
+  //constantly make platforms
+  buildPlatforms()
 }
 
 //function to react to key press down
@@ -86,6 +135,9 @@ const keyDown = (e) => {
   }
   if (e.keyCode == 39 || e.keyCode == 68){
     keys.right = true
+  }
+  if (e.keyCode == 87 || e.keyCode == 38){
+    keys.up = true
   }
 }
 
@@ -98,12 +150,15 @@ const keyUp = (e) => {
   if (e.keyCode == 39 || e.keyCode == 68){
     keys.right = false
   }
+  if (e.keyCode == 87 || e.keyCode == 38){
+    keys.up = false
+  }
 }
 
 
 //game initialization
 
-const player = new Player(innerWidth/2, innerHeight/2, document.querySelector('#player'))
+const player = new Player(0, 0, document.querySelector('#player'))
 setInterval(animate, 22)
 
 //setup variables for attack script
@@ -114,7 +169,6 @@ window.addEventListener('keydown', function(e){
   if (e.keyCode == 32 && e.target == document.body && player.cooldown == false){
     //stop spacebar scroll
     e.preventDefault()
-    console.log('space')
     const attack = new Attack(player.x + 50, player.y, document.querySelector('#attack'))
     keys.space = true
     player.cooldown = true
