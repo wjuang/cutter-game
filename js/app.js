@@ -111,6 +111,7 @@ function animate() {
       player.jump = true
     }
   }
+  player.jump = true
   //left and right movement
   if (keys.left){
     player.xSpeed -= 1.5
@@ -126,13 +127,21 @@ function animate() {
   buildPlatforms()
   //platform collision
   let i = -1
-  if (platforms[3].x < player.x && player.x < platforms[3].x + platforms[3].width && platforms[3].y < player.y+65 && platforms[3].y + platforms[3].height){
+  if (platforms[3].x < player.x && player.x < platforms[3].x + platforms[3].width && platforms[3].y < player.y+64 && player.y < platforms[3].y + platforms[3].height){
     i = 3
-    console.log('hit')
+  }
+  if (platforms[0].x-40 < player.x && player.x < platforms[0].x-40 + platforms[0].width+20 && platforms[0].y < player.y+64 && player.y < platforms[0].y + platforms[0].height){
+    i = 0
+  }
+  if (platforms[1].x-40 < player.x && player.x < platforms[1].x-40 + platforms[1].width+20 && platforms[1].y < player.y+64 && player.y < platforms[1].y + platforms[3].height){
+    i = 1
+  }
+  if (platforms[2].x-40 < player.x && player.x < platforms[2].x-40 + platforms[2].width+20 && platforms[2].y < player.y+64 && player.y < platforms[2].y + platforms[2].height){
+    i = 2
   }
   if (i > -1){
     player.jump = false
-    player.y = platforms[i].y-65
+    player.y = platforms[i].y-64
     player.ySpeed = 0
     player.jumpCooldown = false
   }
