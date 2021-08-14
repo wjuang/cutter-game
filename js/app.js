@@ -75,14 +75,14 @@ class Enemy {
 
 //function to spawn enemies
 const enemies = []
-let xOptions = [100, 375, 650]
+let xOptions = [250, 500, 750]
 let leftOptions = [false, true]
 let leftChoice
 let xChoice
 const spawnEnemies = () => {
+  let spawner = setInterval(() => {
   xChoice = xOptions[Math.round(Math.random() * 2)]
   leftChoice = leftOptions[Math.round(Math.random())]
-  let spawner = setInterval(() => {
     enemies.push(new Enemy(xChoice, 0, document.querySelector('#enemy'), leftChoice))
     console.log(enemies)
   }, 4000)
@@ -144,10 +144,10 @@ function animate() {
       enemy.xSpeed *= friction
     }
     enemy.jump = true
-    if (enemy.flip == false){
-      enemy.xSpeed = 1
-    } else {
+    if (enemy.left == false){
       enemy.xSpeed = -1
+    } else {
+      enemy.xSpeed = 1
     }
     enemy.y += enemy.ySpeed
     enemy.x += enemy.xSpeed
