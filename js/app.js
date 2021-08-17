@@ -79,12 +79,12 @@ let xOptions = [250, 500, 750]
 let leftOptions = [false, true]
 let leftChoice
 let xChoice
+let testEnemy = new Enemy ()
 const spawnEnemies = () => {
   let spawner = setInterval(() => {
   xChoice = xOptions[Math.round(Math.random() * 2)]
   leftChoice = leftOptions[Math.round(Math.random())]
     enemies.push(new Enemy(xChoice, 0, document.querySelector('#enemy'), leftChoice))
-    console.log(enemies)
   }, 4000)
 }
 spawnEnemies()
@@ -113,7 +113,7 @@ const buildPlatforms = () => {
   }
 }
 
-
+/////IMPORTANT ANIMATION FUNCTION/////////////////
 
 //function to animate things
 function animate() {
@@ -191,8 +191,9 @@ function animate() {
     player.ySpeed = 0
     player.jumpCooldown = false
   }
-  //platform collision for enemies
+  //collision for enemies
   enemies.forEach((enemy) => {
+    //platforms
     enemy.j = -1
     if (platforms[3].x < enemy.x && enemy.x < platforms[3].x + platforms[3].width && platforms[3].y < enemy.y+64 && enemy.y < platforms[3].y + platforms[3].height){
       enemy.j = 3
@@ -211,8 +212,23 @@ function animate() {
       enemy.y = platforms[enemy.j].y-64
       enemy.ySpeed = 0
     }
+
+    //attacks
+    if (player.cooldown == true){
+      if (attack.x < enemy.x < attack.x + 64){
+            if (attack.y < enemy.y < attack.y + 64 || attack.y < enemy.y + 64 < attack.y + 64){
+              console.log('hit')
+              }
+      }else if( attack.x < enemy.x + 64 < attack.x + 64){
+            if (attack.y < enemy.y < attack.y + 64 || attack.y < enemy.y + 64 < attack.y + 64){
+            console.log('hit')
+          }
+      }
+    }
   })
 }
+
+//////END IMPORTANT ANIMATION FUNCTION //////////////////
 
 //function to react to key press down
 const keyDown = (e) => {
