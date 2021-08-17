@@ -143,20 +143,26 @@ function animate() {
       enemy.xSpeed *= friction
     }
     enemy.jump = true
+    if (enemy.x < 10){
+      enemy.left = true
+    }
+    if (enemy.x > 920){
+      enemy.left = false
+    }
     if (enemy.left == false){
-      enemy.xSpeed = -1
+      enemy.xSpeed = -1.5
     } else {
-      enemy.xSpeed = 1
+      enemy.xSpeed = 1.5
     }
     enemy.y += enemy.ySpeed
     enemy.x += enemy.xSpeed
   })
   //left and right movement
-  if (keys.left){
+  if (keys.left && player.x > 10){
     player.xSpeed -= 1.5
     player.flip = true
   }
-  if (keys.right){
+  if (keys.right && player.x < 920){
     player.xSpeed += 1.5
     player.flip = false
   }
@@ -172,7 +178,7 @@ function animate() {
   })
   //platform collision for player
   let i = -1
-  if (platforms[3].x < player.x && player.x < platforms[3].x + platforms[3].width && platforms[3].y < player.y+64 && player.y < platforms[3].y + platforms[3].height){
+  if (platforms[3].x-40 < player.x && player.x < platforms[3].x-40 + platforms[3].width+20 && platforms[3].y < player.y+64 && player.y < platforms[3].y + platforms[3].height){
     i = 3
   }
   if (platforms[0].x-40 < player.x && player.x < platforms[0].x-40 + platforms[0].width+20 && platforms[0].y < player.y+64 && player.y < platforms[0].y + platforms[0].height){
@@ -188,13 +194,15 @@ function animate() {
     player.jump = false
     player.y = platforms[i].y-64
     player.ySpeed = 0
-    player.jumpCooldown = false
+    setTimeout(() => {
+      player.jumpCooldown = false
+    }, 1000)
   }
   //collision for enemies
   enemies.forEach((enemy, index) => {
     //platforms
     enemy.j = -1
-    if (platforms[3].x < enemy.x && enemy.x < platforms[3].x + platforms[3].width && platforms[3].y < enemy.y+64 && enemy.y < platforms[3].y + platforms[3].height){
+    if (platforms[3].x-40 < enemy.x && enemy.x < platforms[3].x-40 + platforms[3].width+20 && platforms[3].y < enemy.y+64 && enemy.y < platforms[3].y + platforms[3].height){
       enemy.j = 3
     }
     if (platforms[0].x-40 < enemy.x && enemy.x < platforms[0].x-40 + platforms[0].width+20 && platforms[0].y < enemy.y+64 && enemy.y < platforms[0].y + platforms[0].height){
@@ -216,7 +224,9 @@ function animate() {
     if (player.cooldown == true){
       const dist = Math.hypot((attack.x+32) - (enemy.x+32), (attack.y+32) - (enemy.y+32))
       if (dist - 48 < 1){
+        setTimeout(() => {
         enemies.splice(index, 1)
+      }, 0)
       }
     }
   })
