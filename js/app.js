@@ -79,7 +79,6 @@ let xOptions = [250, 500, 750]
 let leftOptions = [false, true]
 let leftChoice
 let xChoice
-let testEnemy = new Enemy ()
 const spawnEnemies = () => {
   let spawner = setInterval(() => {
   xChoice = xOptions[Math.round(Math.random() * 2)]
@@ -192,7 +191,7 @@ function animate() {
     player.jumpCooldown = false
   }
   //collision for enemies
-  enemies.forEach((enemy) => {
+  enemies.forEach((enemy, index) => {
     //platforms
     enemy.j = -1
     if (platforms[3].x < enemy.x && enemy.x < platforms[3].x + platforms[3].width && platforms[3].y < enemy.y+64 && enemy.y < platforms[3].y + platforms[3].height){
@@ -215,14 +214,9 @@ function animate() {
 
     //attacks
     if (player.cooldown == true){
-      if (attack.x < enemy.x < attack.x + 64){
-            if (attack.y < enemy.y < attack.y + 64 || attack.y < enemy.y + 64 < attack.y + 64){
-              console.log('hit')
-              }
-      }else if( attack.x < enemy.x + 64 < attack.x + 64){
-            if (attack.y < enemy.y < attack.y + 64 || attack.y < enemy.y + 64 < attack.y + 64){
-            console.log('hit')
-          }
+      const dist = Math.hypot((attack.x+32) - (enemy.x+32), (attack.y+32) - (enemy.y+32))
+      if (dist - 48 < 1){
+        enemies.splice(index, 1)
       }
     }
   })
@@ -268,6 +262,7 @@ const player = new Player(10, 485, document.querySelector('#player'))
 setInterval(animate, 22)
 
 //setup variables for attack script
+let attack
 let attackTime
 let attackInterval
 //event listener for attack
@@ -275,7 +270,7 @@ window.addEventListener('keydown', function(e){
   if (e.keyCode == 32 && e.target == document.body && player.cooldown == false){
     //stop spacebar scroll
     e.preventDefault()
-    const attack = new Attack(player.x, player.y, document.querySelector('#attack'))
+    attack = new Attack(player.x, player.y, document.querySelector('#attack'))
     if (player.flip == false){
       attack.x += 50
     }
