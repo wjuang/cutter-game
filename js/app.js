@@ -168,6 +168,7 @@ function animate() {
   }
   player.y += player.ySpeed
   player.x += player.xSpeed
+
   //constantly make updated character
   player.draw()
   //constantly make platforms
@@ -239,9 +240,15 @@ const keyDown = (e) => {
   e.preventDefault()
   if (e.keyCode == 37 || e.keyCode == 65){
     keys.left = true
+    let aText = document.querySelector('#attack')
+    aText.outerHTML = "<img id='attack' src='assets/slashflip.png'>"
+    player.link = document.querySelector('#playerflip')
   }
   if (e.keyCode == 39 || e.keyCode == 68){
     keys.right = true
+    let aText = document.querySelector('#attack')
+    aText.outerHTML = "<img id='attack' src='assets/slash.png'>"
+    player.link = document.querySelector('#player')
   }
   if (e.keyCode == 87 || e.keyCode == 38){
     keys.up = true
@@ -283,9 +290,11 @@ window.addEventListener('keydown', function(e){
     attack = new Attack(player.x, player.y, document.querySelector('#attack'))
     if (player.flip == false){
       attack.x += 50
+      player.link = document.querySelector('#swingright')
     }
     if (player.flip == true){
       attack.x -=50
+      player.link = document.querySelector('#swingleft')
     }
     keys.space = true
     player.cooldown = true
