@@ -3,6 +3,7 @@ const canvas = document.querySelector('#playspace')
 canvas.width = 1000
 canvas.height = 500
 const ctx = canvas.getContext('2d')
+let finishAll = false
 
 
 //parameters for reality
@@ -199,6 +200,14 @@ function animate() {
       player.jumpCooldown = false
     }, 1000)
   }
+
+  //enemy collision for player
+  enemies.forEach((enemy, index) => {
+    const dist = Math.hypot((player.x+32) - (enemy.x+32), (player.y+32) - (enemy.y+32))
+    if (dist-60 < 1){
+      gameOver()
+    }
+  })
   //collision for enemies
   enemies.forEach((enemy, index) => {
     //platforms
@@ -272,11 +281,35 @@ const keyUp = (e) => {
   }
 }
 
+//function to end game
+const gameOver = () => {
+  clearInterval(playGame)
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+  if (player.flip == false){
+    player.link = document.querySelector('#hit')
+    player.draw()
+    setTimeout(function(){
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      player.link = document.querySelector('#dead')
+      player.draw()
+    }, 1000)
+  }
+  if (player.flip == true){
+    player.link = document.querySelector('#hitflip')
+    player.draw()
+    setTimeout(function(){
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      player.link = document.querySelector('#deadflip')
+      player.draw()
+    }, 1000)
+  }
+}
+
 
 //game initialization
 
 const player = new Player(10, 485, document.querySelector('#player'))
-setInterval(animate, 22)
+const playGame = setInterval(animate, 22)
 
 //setup variables for attack script
 let attack
