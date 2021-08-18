@@ -258,15 +258,14 @@ function animate() {
     enemy.draw()
     setTimeout(() => {
       deadEnemies.splice(index, 1)
-    }, 1000)
+    }, 800)
   })
   //function to animate attacks
   attacks.forEach((attack, index) => {
-
     attack.draw()
     setTimeout(() => {
       attacks.splice(index, 1)
-    }, 800)
+    }, 500)
   })
 }
 
@@ -354,9 +353,12 @@ let attackTime
 let attackInterval
 //event listener for attack
 window.addEventListener('keydown', function(e){
-  if (e.keyCode == 32 && e.target == document.body && player.cooldown == false){
+  if (e.keyCode == 32 && e.target == document.body && player.cooldown == false && keys.space == false){
     //stop spacebar scroll
     e.preventDefault()
+    keys.space = true
+    player.cooldown = true
+    console.log('good attack')
     attack = new Attack(player.x, player.y, document.querySelector('#attack'))
     if (player.flip == false){
       attack.x += 50
@@ -367,13 +369,10 @@ window.addEventListener('keydown', function(e){
       player.link = document.querySelector('#swingleft')
     }
     attacks.push(attack)
-    keys.space = true
-    player.cooldown = true
     setTimeout(function(){
       keys.space = false
       player.cooldown = false
     }, 1000)
-    //function to make attack happen for x seconds
   }
 })
 
