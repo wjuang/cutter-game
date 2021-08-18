@@ -4,6 +4,7 @@ canvas.width = 1000
 canvas.height = 500
 const ctx = canvas.getContext('2d')
 let finishAll = false
+let score = 0
 
 
 //parameters for reality
@@ -178,6 +179,9 @@ function animate() {
   enemies.forEach((enemy) => {
     enemy.draw()
   })
+  //display score
+  ctx.font = '20px serif'
+  ctx.fillText(`Score: ${score}`, 10, 20)
   //platform collision for player
   let i = -1
   if (platforms[3].x-40 < player.x && player.x < platforms[3].x-40 + platforms[3].width+20 && platforms[3].y < player.y+64 && player.y < platforms[3].y + platforms[3].height){
@@ -237,6 +241,7 @@ function animate() {
         setTimeout(() => {
         enemies.splice(index, 1)
       }, 0)
+      score++
       }
     }
   })
@@ -292,6 +297,10 @@ const gameOver = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       player.link = document.querySelector('#dead')
       player.draw()
+      ctx.font = '108px serif'
+      ctx.fillText('YOU DIED', 200, 200)
+      ctx.font = '48px serif'
+      ctx.fillText(`Your score was:`, 300, 400)
     }, 1000)
   }
   if (player.flip == true){
@@ -301,8 +310,13 @@ const gameOver = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       player.link = document.querySelector('#deadflip')
       player.draw()
+      ctx.font = '108px serif'
+      ctx.fillText('YOU DIED', 250, 250)
+      ctx.font = '48px serif'
+      ctx.fillText(`Your score was: ${score}`, 300, 350)
     }, 1000)
   }
+
 }
 
 
