@@ -196,7 +196,7 @@ function animate() {
   if (platforms[2].x-40 < player.x && player.x < platforms[2].x-40 + platforms[2].width+20 && platforms[2].y < player.y+64 && player.y < platforms[2].y + platforms[2].height){
     i = 2
   }
-  if (i > -1){
+  if (i > -1 && player.ySpeed >= 0){
     player.jump = false
     player.y = platforms[i].y-64
     player.ySpeed = 0
@@ -208,7 +208,7 @@ function animate() {
   //enemy collision for player
   enemies.forEach((enemy, index) => {
     const dist = Math.hypot((player.x+32) - (enemy.x+32), (player.y+32) - (enemy.y+32))
-    if (dist-58 < 1){
+    if (dist-44 < 1){
       gameOver()
     }
   })
