@@ -93,6 +93,9 @@ spawnEnemies()
 //array for later dead enemies
 const deadEnemies = []
 
+//array for attacks
+const attacks = []
+
 //make platforms
 const platforms = []
 //function to build platform into array
@@ -257,6 +260,14 @@ function animate() {
       deadEnemies.splice(index, 1)
     }, 1000)
   })
+  //function to animate attacks
+  attacks.forEach((attack, index) => {
+
+    attack.draw()
+    setTimeout(() => {
+      attacks.splice(index, 1)
+    }, 800)
+  })
 }
 
 //////END IMPORTANT ANIMATION FUNCTION //////////////////
@@ -355,22 +366,14 @@ window.addEventListener('keydown', function(e){
       attack.x -=50
       player.link = document.querySelector('#swingleft')
     }
+    attacks.push(attack)
     keys.space = true
     player.cooldown = true
     setTimeout(function(){
       keys.space = false
       player.cooldown = false
     }, 1000)
-    //trial function to make attack happen for x seconds
-    attackTime = 1
-    attackInterval = setInterval(function(){
-      if (attackTime <= 80){
-        attack.draw()
-        attackTime++
-      } else{
-        clearInterval(attackInterval)
-      }
-    }, 1)
+    //function to make attack happen for x seconds
   }
 })
 
