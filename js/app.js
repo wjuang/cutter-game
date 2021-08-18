@@ -86,9 +86,12 @@ const spawnEnemies = () => {
   xChoice = xOptions[Math.round(Math.random() * 2)]
   leftChoice = leftOptions[Math.round(Math.random())]
     enemies.push(new Enemy(xChoice, 0, document.querySelector('#enemy'), leftChoice))
-  }, 1000)
+  }, 1500)
 }
 spawnEnemies()
+
+//array for later dead enemies
+const deadEnemies = []
 
 //make platforms
 const platforms = []
@@ -208,7 +211,7 @@ function animate() {
   //enemy collision for player
   enemies.forEach((enemy, index) => {
     const dist = Math.hypot((player.x+32) - (enemy.x+32), (player.y+32) - (enemy.y+32))
-    if (dist-44 < 1){
+    if (dist-40 < 1){
       gameOver()
     }
   })
@@ -239,11 +242,20 @@ function animate() {
       const dist = Math.hypot((attack.x+32) - (enemy.x+32), (attack.y+32) - (enemy.y+32))
       if (dist - 48 < 1){
         setTimeout(() => {
+        deadEnemies.push(enemies[index])
         enemies.splice(index, 1)
       }, 0)
       score++
       }
     }
+  })
+  //function to animate enemy deaths
+  deadEnemies.forEach((enemy, index) => {
+    enemy.link = document.querySelector('#enemydie')
+    enemy.draw()
+    setTimeout(() => {
+      deadEnemies.splice(index, 1)
+    }, 1000)
   })
 }
 
