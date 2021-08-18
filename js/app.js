@@ -86,7 +86,7 @@ const spawnEnemies = () => {
   xChoice = xOptions[Math.round(Math.random() * 2)]
   leftChoice = leftOptions[Math.round(Math.random())]
     enemies.push(new Enemy(xChoice, 0, document.querySelector('#enemy'), leftChoice))
-  }, 4000)
+  }, 1000)
 }
 spawnEnemies()
 
@@ -119,7 +119,7 @@ const buildPlatforms = () => {
 //function to animate things
 function animate() {
   //frame refresh command
-  ctx.clearRect(0, 0, canvas.width, canvas.height)
+  ctx.clearRect(0, 0, 1000, 500)
   //acceleration rules
   if (player.jump == false){
     player.xSpeed *= friction
@@ -208,7 +208,7 @@ function animate() {
   //enemy collision for player
   enemies.forEach((enemy, index) => {
     const dist = Math.hypot((player.x+32) - (enemy.x+32), (player.y+32) - (enemy.y+32))
-    if (dist-60 < 1){
+    if (dist-58 < 1){
       gameOver()
     }
   })
@@ -298,9 +298,9 @@ const gameOver = () => {
       player.link = document.querySelector('#dead')
       player.draw()
       ctx.font = '108px serif'
-      ctx.fillText('YOU DIED', 200, 200)
+      ctx.fillText('YOU DIED', 250, 250)
       ctx.font = '48px serif'
-      ctx.fillText(`Your score was:`, 300, 400)
+      ctx.fillText(`Your score was: ${score}`, 300, 350)
     }, 1000)
   }
   if (player.flip == true){
