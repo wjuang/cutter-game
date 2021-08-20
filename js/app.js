@@ -88,7 +88,6 @@ const spawnEnemies = () => {
     enemies.push(new Enemy(xChoice, 0, document.querySelector('#enemy'), leftChoice))
   }, 1500)
 }
-spawnEnemies()
 
 //array for later dead enemies
 const deadEnemies = []
@@ -358,7 +357,6 @@ window.addEventListener('keydown', function(e){
     e.preventDefault()
     keys.space = true
     player.cooldown = true
-    console.log('good attack')
     attack = new Attack(player.x, player.y, document.querySelector('#attack'))
     if (player.flip == false){
       attack.x += 50
@@ -375,6 +373,3 @@ window.addEventListener('keydown', function(e){
     }, 1000)
   }
 })
-
-window.addEventListener('keydown', keyDown)
-window.addEventListener('keyup', keyUp)
