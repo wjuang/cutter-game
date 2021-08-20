@@ -4,9 +4,13 @@ startButton.addEventListener('click', (event) => {
   let gamePage = document.querySelector('#playspace')
   startPage.style.display = 'none'
   gamePage.style.display = 'flex'
-  console.log(gamePage.style.display)
   spawnEnemies()
 
   window.addEventListener('keydown', keyDown)
   window.addEventListener('keyup', keyUp)
+})
+
+let restartButton = document.querySelector('#restart')
+restartButton.addEventListener('click', (event) => {
+  window.location.reload()
 })

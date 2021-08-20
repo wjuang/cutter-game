@@ -363,7 +363,9 @@ const gameOver = () => {
       ctx.fillText(`Your score was: ${score}`, 300, 350)
     }, 1000)
   }
-
+  let restartDiv = document.querySelector('#restartDiv')
+  restartDiv.style.display = "flex"
+  console.log('flex')
 }
 
 
