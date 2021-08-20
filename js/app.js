@@ -67,6 +67,8 @@ class Enemy {
     this.link = link
     this.left = left
     this.jump = false
+    //walk animation sprite
+    this.sprite = 1
     //this last one is for platform collision
     this.j = -1
   }
@@ -87,6 +89,30 @@ const spawnEnemies = () => {
   leftChoice = leftOptions[Math.round(Math.random())]
     enemies.push(new Enemy(xChoice, 0, document.querySelector('#enemy'), leftChoice))
   }, 1500)
+}
+
+//function to alternate enemy sprite
+const enemyMove = () => {
+  enemies.forEach((enemy, index) => {
+    if (enemy.left == true){
+      if (enemy.sprite == 1){
+        enemy.link = document.querySelector('#enemyflip')
+        enemy.sprite = 2
+      } else if (enemy.sprite == 2){
+        enemy.link = document.querySelector('#enemy2flip')
+        enemy.sprite = 1
+      }
+    }
+    if (enemy.left == false){
+      if (enemy.sprite == 1){
+        enemy.link = document.querySelector('#enemy')
+        enemy.sprite = 2
+      } else if (enemy.sprite == 2){
+        enemy.link = document.querySelector('#enemy2')
+        enemy.sprite = 1
+      }
+    }
+  })
 }
 
 //array for later dead enemies
@@ -345,6 +371,7 @@ const gameOver = () => {
 
 const player = new Player(10, 485, document.querySelector('#player'))
 const playGame = setInterval(animate, 22)
+const enemySpriteMove = setInterval(enemyMove, 1000)
 
 //setup variables for attack script
 let attack
