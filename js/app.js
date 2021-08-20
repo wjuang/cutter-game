@@ -88,7 +88,7 @@ const spawnEnemies = () => {
   xChoice = xOptions[Math.round(Math.random() * 2)]
   leftChoice = leftOptions[Math.round(Math.random())]
     enemies.push(new Enemy(xChoice, 0, document.querySelector('#enemy'), leftChoice))
-  }, 1500)
+  }, 2000)
 }
 
 //function to alternate enemy sprite
@@ -113,6 +113,12 @@ const enemyMove = () => {
       }
     }
   })
+}
+
+//fuction to make enemies gradually move faster
+let harder = 0
+const enemySpeedUp = () => {
+  harder += 0.1
 }
 
 //array for later dead enemies
@@ -183,9 +189,9 @@ function animate() {
       enemy.left = false
     }
     if (enemy.left == false){
-      enemy.xSpeed = -1.5
+      enemy.xSpeed = -0.8 - harder
     } else {
-      enemy.xSpeed = 1.5
+      enemy.xSpeed = 0.8 + harder
     }
     enemy.y += enemy.ySpeed
     enemy.x += enemy.xSpeed
@@ -365,7 +371,6 @@ const gameOver = () => {
   }
   let restartDiv = document.querySelector('#restartDiv')
   restartDiv.style.display = "flex"
-  console.log('flex')
 }
 
 
@@ -374,6 +379,7 @@ const gameOver = () => {
 const player = new Player(10, 485, document.querySelector('#player'))
 const playGame = setInterval(animate, 22)
 const enemySpriteMove = setInterval(enemyMove, 1000)
+
 
 //setup variables for attack script
 let attack
