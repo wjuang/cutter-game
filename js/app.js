@@ -123,6 +123,13 @@ const enemySpeedUp = () => {
 
 //array for later dead enemies
 const deadEnemies = []
+let deathSound = {
+  sound: Object.assign(document.createElement('audio'), {
+    src: 'assets/death.mp3',
+    loop: false,
+    volume: 1,
+  })
+}
 
 //array for attacks
 const attacks = []
@@ -369,6 +376,7 @@ const gameOver = () => {
       ctx.fillText(`Your score was: ${score}`, 300, 350)
     }, 1000)
   }
+  deathSound.sound.play()
   let restartDiv = document.querySelector('#restartDiv')
   restartDiv.style.display = "flex"
 }
@@ -385,6 +393,13 @@ const enemySpriteMove = setInterval(enemyMove, 1000)
 let attack
 let attackTime
 let attackInterval
+let attacksound = {
+  sound: Object.assign(document.createElement('audio'), {
+    src: 'assets/slicesound.mp3',
+    loop: false,
+    volume: 0.2,
+  })
+}
 //event listener for attack
 window.addEventListener('keydown', function(e){
   if (e.keyCode == 32 && e.target == document.body && player.cooldown == false && keys.space == false){
@@ -401,6 +416,7 @@ window.addEventListener('keydown', function(e){
       attack.x -=50
       player.link = document.querySelector('#swingleft')
     }
+    attacksound.sound.play()
     attacks.push(attack)
     setTimeout(function(){
       keys.space = false

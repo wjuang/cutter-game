@@ -9,6 +9,14 @@ startButton.addEventListener('click', (event) => {
 
   window.addEventListener('keydown', keyDown)
   window.addEventListener('keyup', keyUp)
+  let bgm = {
+    sound: Object.assign(document.createElement('audio'), {
+      src: 'assets/bgm.mp3',
+      loop: true,
+      volume: 0.2,
+    })
+  }
+  bgm.sound.play()
 })
 
 let restartButton = document.querySelector('#restart')
