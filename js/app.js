@@ -33,7 +33,7 @@ class Player {
     //need to know if flipped or not
     this.flip = false
     //attack cooldown
-    this.cooldown = false
+    this.cooldown = true
 
     //jump status
     this.jump = false
@@ -384,6 +384,7 @@ const gameOver = () => {
     }, 1000)
   }
   deathSound.sound.play()
+  player.cooldown = true
   let restartDiv = document.querySelector('#restartDiv')
   restartDiv.style.display = "flex"
 }
@@ -414,6 +415,7 @@ window.addEventListener('keydown', function(e){
     e.preventDefault()
     keys.space = true
     player.cooldown = true
+    attacksound.sound.play()
     attack = new Attack(player.x, player.y, document.querySelector('#attack'))
     if (player.flip == false){
       attack.x += 50
@@ -423,7 +425,6 @@ window.addEventListener('keydown', function(e){
       attack.x -=50
       player.link = document.querySelector('#swingleft')
     }
-    attacksound.sound.play()
     attacks.push(attack)
     setTimeout(function(){
       keys.space = false

@@ -6,7 +6,7 @@ startButton.addEventListener('click', (event) => {
   gamePage.style.display = 'flex'
   spawnEnemies()
   const getHarder = setInterval(enemySpeedUp, 15000)
-
+  player.cooldown = false
   window.addEventListener('keydown', keyDown)
   window.addEventListener('keyup', keyUp)
   let bgm = {
