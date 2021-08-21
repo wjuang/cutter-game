@@ -130,6 +130,16 @@ let deathSound = {
     volume: 1,
   })
 }
+//function to animate and remove dead enemies
+const deadCheck = () => {
+    deadEnemies.forEach((enemy, index) => {
+    enemy.link = document.querySelector('#enemydie')
+    enemy.draw()
+    setTimeout(() => {
+      deadEnemies.splice(index, 1)
+    }, 200)
+  })
+}
 
 //array for attacks
 const attacks = []
@@ -296,13 +306,8 @@ function animate() {
     }
   })
   //function to animate enemy deaths
-  deadEnemies.forEach((enemy, index) => {
-    enemy.link = document.querySelector('#enemydie')
-    enemy.draw()
-    setTimeout(() => {
-      deadEnemies.splice(index, 1)
-    }, 800)
-  })
+  deadCheck()
+
   //function to animate attacks
   attacks.forEach((attack, index) => {
     attack.draw()
