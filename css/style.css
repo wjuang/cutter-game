@@ -1,5 +1,5 @@
 #playspace{
-  background-color: gray;
+  background-color: black;
   margin: 0 auto;
   display: none;
   justify-content: center;
@@ -18,6 +18,21 @@ h1 {
 
 #restartDiv{
   display: none;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+}
+
+#startscreen {
+  display: flex;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#start{
+  display: flex;
   margin: 0 auto;
   justify-content: center;
   align-items: center;

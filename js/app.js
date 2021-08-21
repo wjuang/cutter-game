@@ -152,11 +152,13 @@ createPlatform(650, 350, 250)
 createPlatform(0, 480, 1000)
 //function to render array
 const buildPlatforms = () => {
-  ctx.fillStyle = "#000000"
+  ctx.fillStyle = "#544a2d"
   for (each in platforms){
     ctx.fillRect(platforms[each].x, platforms[each].y, platforms[each].width, platforms[each].height)
   }
 }
+//pull background
+const bg = document.querySelector('#background')
 
 /////IMPORTANT ANIMATION FUNCTION/////////////////
 
@@ -164,6 +166,8 @@ const buildPlatforms = () => {
 function animate() {
   //frame refresh command
   ctx.clearRect(0, 0, 1000, 500)
+  ctx.drawImage(bg, 0, 0, 1000, 500)
+  ctx.restore()
   //acceleration rules
   if (player.jump == false){
     player.xSpeed *= friction
@@ -224,8 +228,9 @@ function animate() {
     enemy.draw()
   })
   //display score
-  ctx.font = '20px serif'
-  ctx.fillText(`Score: ${score}`, 10, 20)
+  ctx.font = '32px serif'
+  ctx.fillStyle = "black"
+  ctx.fillText(`Score: ${score}`, 20, 40)
   //platform collision for player
   let i = -1
   if (platforms[3].x-40 < player.x && player.x < platforms[3].x-40 + platforms[3].width+20 && platforms[3].y < player.y+64 && player.y < platforms[3].y + platforms[3].height){
@@ -358,6 +363,7 @@ const gameOver = () => {
       player.link = document.querySelector('#dead')
       player.draw()
       ctx.font = '108px serif'
+      ctx.fillStyle = "white"
       ctx.fillText('YOU DIED', 250, 250)
       ctx.font = '48px serif'
       ctx.fillText(`Your score was: ${score}`, 300, 350)
@@ -371,6 +377,7 @@ const gameOver = () => {
       player.link = document.querySelector('#deadflip')
       player.draw()
       ctx.font = '108px serif'
+      ctx.fillStyle = "white"
       ctx.fillText('YOU DIED', 250, 250)
       ctx.font = '48px serif'
       ctx.fillText(`Your score was: ${score}`, 300, 350)
